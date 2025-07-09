@@ -32,3 +32,10 @@ jobs:
       run: |
         make -j$(nproc) download
         make -j$(nproc)
+
+    - name: Upload firmware
+      uses: actions/upload-artifact@v3
+      with:
+        name: OpenWrt_ImmortalWrt_ERX
+        path: bin/targets/
+        
