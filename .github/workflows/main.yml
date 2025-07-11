@@ -21,7 +21,7 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-    - name: Copy .config
+    - name: Backup .config
       run: |
         cp .config .config.bak
         echo "✅ .config copied"
@@ -37,7 +37,8 @@ jobs:
     - name: Verify config essentials
       run: |
         check() { grep -q "^$1=y" .config || { echo "❌ $1 missing"; exit 1; }; }
-        check CONFIG_PACKAGE_luci
+        check CONFIG_PACKAGE_luci-base
+        check CONFIG_PACKAGE_luci-mod-admin-full
         check CONFIG_PACKAGE_luci-app-opkg
         check CONFIG_PACKAGE_opkg
         check CONFIG_PACKAGE_uhttpd
