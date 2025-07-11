@@ -22,23 +22,19 @@ jobs:
         ./scripts/feeds install -a
 
     - name: Backup .config
-      run: |
-        cp .config .config.bak
-        echo "✅ .config copied"
+      run: cp .config .config.bak
 
     - name: Restore .config after feeds
-      run: |
-        cp .config.bak .config
+      run: cp .config.bak .config
 
-    - name: Apply oldconfig to preserve selections
-      run: |
-        yes "" | make oldconfig
+    - name: Apply defconfig
+      run: make defconfig
 
     - name: Verify config essentials
       run: |
         check() { grep -q "^$1=y" .config || { echo "❌ $1 missing"; exit 1; }; }
+        check CONFIG_PACKAGE_luci
         check CONFIG_PACKAGE_luci-base
-        check CONFIG_PACKAGE_luci-mod-admin-full
         check CONFIG_PACKAGE_luci-app-opkg
         check CONFIG_PACKAGE_opkg
         check CONFIG_PACKAGE_uhttpd
