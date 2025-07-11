@@ -30,9 +30,9 @@ jobs:
       run: |
         cp .config.bak .config
 
-    - name: Apply defconfig
+    - name: Apply oldconfig to preserve selections
       run: |
-        make defconfig
+        yes "" | make oldconfig
 
     - name: Verify config essentials
       run: |
