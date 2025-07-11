@@ -21,14 +21,16 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-    - name: Backup .config
-      run: cp .config .config.bak
+    - name: Backup original .config
+      run: |
+        cp .config .config.bak
+        echo "✅ .config copied"
 
-    - name: Restore .config after feeds
+    - name: Restore .config
       run: cp .config.bak .config
 
-    - name: Apply defconfig
-      run: make defconfig
+    - name: Apply oldconfig to preserve selections
+      run: make oldconfig
 
     - name: Verify config essentials
       run: |
