@@ -21,11 +21,18 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-    - name: Apply .config and defconfig
+    - name: Copy .config
       run: |
         cp .config .config.bak
+        echo "✅ .config copied"
+
+    - name: Apply defconfig
+      run: |
         make defconfig
-        echo "\n🔍 Checking config essentials..."
+
+    - name: Verify config essentials
+      run: |
+        echo "🔍 Checking config essentials..."
         grep -E 'CONFIG_PACKAGE_luci( |=)y' .config || echo "❌ luci missing"
         grep -E 'CONFIG_PACKAGE_luci-app-opkg( |=)y' .config || echo "❌ luci-app-opkg missing"
         grep -E 'CONFIG_PACKAGE_opkg( |=)y' .config || echo "❌ opkg missing"
